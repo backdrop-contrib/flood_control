@@ -17,14 +17,13 @@ function flood_control_permission() {
  * Implementation of hook_menu().
  */
 function flood_control_menu() {
-  $items['admin/settings/flood-control'] = array(
+  $items['admin/config/system/flood-control'] = array(
     'title' => 'Flood control',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('flood_control_settings_form'),
-    'acccess arguments' => array('administer flood control'),
+    'access arguments' => array('administer flood control'),
     'file' => 'flood_control.admin.inc',
   );
-
   return $items;
 }
 

@@ -47,25 +47,18 @@ function flood_control_settings_form() {
     '#type' => 'fieldset',
     '#title' => t('Contact forms'),
   );
-  $form['contact']['contact_hourly_threshold'] = array(
+  $form['contact']['contact_threshold_limit'] = array(
     '#type' => 'select',
-    '#title' => t('Hourly threshold'),
+    '#title' => t('Sending e-mails limit'),
     '#options' => drupal_map_assoc(array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50)),
-    '#default_value' => 3,
-    '#description' => t('The maximum number of contact form submissions a user can perform per hour.'),
+    '#default_value' => 5,
   );
-  //$form['contact']['contact_mail_limit'] = array(
-  //  '#type' => 'select',
-  //  '#title' => t('Sending e-mails limit'),
-  //  '#options' => drupal_map_assoc(array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50)),
-  //  '#default_value' => 3,
-  //);
-  //$form['contact']['contact_mail_window'] = array(
-  //  '#type' => 'select',
-  //  '#title' => t('Sending e-mails window'),
-  //  '#options' => array(0 => t('None (disabled)')) + drupal_map_assoc(array(60, 180, 300, 600, 900, 1800, 2700, 3600, 10800, 21600, 32400, 43200, 86400), 'format_interval'),
-  //  '#default_value' => 3600,
-  //);
+  $form['contact']['contact_threshold_window'] = array(
+    '#type' => 'select',
+    '#title' => t('Sending e-mails window'),
+    '#options' => array(0 => t('None (disabled)')) + drupal_map_assoc(array(60, 180, 300, 600, 900, 1800, 2700, 3600, 10800, 21600, 32400, 43200, 86400), 'format_interval'),
+    '#default_value' => 3600,
+  );
 
   return system_settings_form($form);
 }
