@@ -1,7 +1,7 @@
 ; $Id$
-name = Flood Control
-description = "Description here."
+name = Flood control
+description = "Administration interface for hidden flood control variables."
 core = 7.x
-;files[] = flood_control.install
 files[] = flood_control.module
 files[] = flood_control.admin.inc
+configure = admin/config/system/flood-control
