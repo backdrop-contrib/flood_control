@@ -18,6 +18,7 @@ function flood_control_permission() {
 function flood_control_menu() {
   $items['admin/config/system/flood-control'] = array(
     'title' => 'Flood control',
+    'description' => 'Control flood control options for failed login attempts, contact forms, etc.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('flood_control_settings_form'),
     'access arguments' => array('administer flood control'),
