@@ -3,7 +3,7 @@
 
 /**
  * @file
- * Administrative page callbacks for the flood_control module.
+ * Admin page callbacks for the flood_control module.
  */
 
 /**
@@ -16,6 +16,7 @@ function flood_control_settings_form() {
   $form['login'] = array(
     '#type' => 'fieldset',
     '#title' => t('Login'),
+    '#access' => user_access('administer users'),
   );
   $form['login']['user_failed_login_ip_limit'] = array(
     '#type' => 'select',
@@ -46,6 +47,7 @@ function flood_control_settings_form() {
   $form['contact'] = array(
     '#type' => 'fieldset',
     '#title' => t('Contact forms'),
+    '#access' => user_access('administer contact forms'),
   );
   $form['contact']['contact_threshold_limit'] = array(
     '#type' => 'select',
@@ -60,5 +62,19 @@ function flood_control_settings_form() {
     '#default_value' => 3600,
   );
 
-  return system_settings_form($form);
+  // Show a message if the user does not have any access to any options.
+  $access = FALSE;
+  foreach ($form as $element) {
+    $access |= $element['#access'];
+  }
+  if (!$access) {
+    $form['nothing'] = array(
+      '#markup' => '<p>' . t('Sorry, there are no flood control options for you to configure.') . '</p>',
+    );
+  }
+  else {
+    $form = system_settings_form($form);
+  }
+
+  return $form;
 }

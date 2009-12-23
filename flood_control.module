@@ -2,17 +2,6 @@
 // $Id$
 
 /**
- * Implements hook_permission().
- */
-function flood_control_permission() {
-  return array(
-    'administer flood control' => array(
-      'title' => t('Administer flood control'),
-    ),
-  );
-}
-
-/**
  * Implements hook_menu().
  */
 function flood_control_menu() {
@@ -21,7 +10,7 @@ function flood_control_menu() {
     'description' => 'Control flood control options for failed login attempts, contact forms, etc.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('flood_control_settings_form'),
-    'access arguments' => array('administer flood control'),
+    'access arguments' => array('administer site configuration'),
     'file' => 'flood_control.admin.inc',
   );
   return $items;
