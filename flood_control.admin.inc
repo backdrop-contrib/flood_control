@@ -63,11 +63,7 @@ function flood_control_settings_form() {
   );
 
   // Show a message if the user does not have any access to any options.
-  $access = FALSE;
-  foreach ($form as $element) {
-    $access |= $element['#access'];
-  }
-  if (!$access) {
+  if (!element_get_visible_children($form)) {
     $form['nothing'] = array(
       '#markup' => '<p>' . t('Sorry, there are no flood control options for you to configure.') . '</p>',
     );
