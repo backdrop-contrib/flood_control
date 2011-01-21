@@ -21,7 +21,7 @@ function flood_control_settings_form() {
   $form['login']['user_failed_login_ip_limit'] = array(
     '#type' => 'select',
     '#title' => t('Failed login (IP) limit'),
-    '#options' => drupal_map_assoc(array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50)),
+    '#options' => drupal_map_assoc(array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 75, 100, 125, 150, 200, 250, 500)),
     '#default_value' => variable_get('user_failed_login_ip_limit', 50),
   );
   $form['login']['user_failed_login_ip_window'] = array(
@@ -32,8 +32,8 @@ function flood_control_settings_form() {
   );
   $form['login']['user_failed_login_user_limit'] = array(
     '#type' => 'select',
-    '#title' => t('Faild login (username) limit'),
-    '#options' => drupal_map_assoc(array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50)),
+    '#title' => t('Failed login (username) limit'),
+    '#options' => drupal_map_assoc(array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 75, 100, 125, 150, 200, 250, 500)),
     '#default_value' => variable_get('user_failed_login_user_limit', 5),
   );
   $form['login']['user_failed_login_user_window'] = array(
