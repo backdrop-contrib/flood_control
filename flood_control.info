@@ -1,7 +1,4 @@
-; $Id$
 name = Flood control
 description = "Interface for hidden flood control options."
 core = 7.x
-files[] = flood_control.module
-files[] = flood_control.admin.inc
 configure = admin/config/system/flood-control

@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 /**
  * @file
@@ -52,7 +51,7 @@ function flood_control_settings_form() {
   $form['contact']['contact_threshold_limit'] = array(
     '#type' => 'select',
     '#title' => t('Sending e-mails limit'),
-    '#options' => drupal_map_assoc(array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50)),
+    '#options' => drupal_map_assoc(array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 75, 100, 125, 150, 200, 250, 500)),
     '#default_value' => variable_get('contact_threshold_limit', 5),
   );
   $form['contact']['contact_threshold_window'] = array(
