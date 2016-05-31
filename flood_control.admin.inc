@@ -7,39 +7,61 @@
 
 /**
  * Administration settings form.
- *
- * @see system_settings_form()
  */
 function flood_control_settings_form() {
   // User module flood events.
-  $form['login'] = array(
+  $form['user'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Login'),
+    '#title' => t('User login'),
     '#access' => user_access('administer users'),
   );
-  $form['login']['user_failed_login_ip_limit'] = array(
+
+  $form['user']['ip'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('IP limits'),
+    '#description' => t("Do not allow any login from the user's IP if the limit has been reached. Default is 50 failed attempts allowed in one hour. This is independent of the per-user limit to catch attempts from one IP to log in to many different user accounts. We have a reasonably high limit since there may be only one apparent IP for all users at an institution."),
+  );
+  $form['user']['ip']['flood_ip_limit'] = array(
     '#type' => 'select',
     '#title' => t('Failed login (IP) limit'),
-    '#options' => drupal_map_assoc(array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 75, 100, 125, 150, 200, 250, 500)),
-    '#default_value' => variable_get('user_failed_login_ip_limit', 50),
+    '#description' => t('Default 50.'),
+    '#options' => backdrop_map_assoc(array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 75, 100, 125, 150, 200, 250, 500)),
+    '#default_value' => config_get('user.flood', 'flood_ip_limit'),
   );
-  $form['login']['user_failed_login_ip_window'] = array(
+  $form['user']['ip']['flood_ip_window'] = array(
     '#type' => 'select',
-    '#title' => t('Failed login (IP) window'),
-    '#options' => array(0 => t('None (disabled)')) + drupal_map_assoc(array(60, 180, 300, 600, 900, 1800, 2700, 3600, 10800, 21600, 32400, 43200, 86400), 'format_interval'),
-    '#default_value' => variable_get('user_failed_login_ip_window', 3600),
+    '#title' => t('Failed login window'),
+    '#description' => t('Default 1 hour.'),
+    '#options' => array(0 => t('None (disabled)')) + backdrop_map_assoc(array(60, 180, 300, 600, 900, 1800, 2700, 3600, 10800, 21600, 32400, 43200, 86400), 'format_interval'),
+    '#default_value' => config_get('user.flood', 'flood_ip_window'),
   );
-  $form['login']['user_failed_login_user_limit'] = array(
-    '#type' => 'select',
-    '#title' => t('Failed login (username) limit'),
-    '#options' => drupal_map_assoc(array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 75, 100, 125, 150, 200, 250, 500)),
-    '#default_value' => variable_get('user_failed_login_user_limit', 5),
+
+  $form['user']['username'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Username limits'),
+    '#description' => t("Don't allow login if the limit for a user has been reached. Default is to allow 5 failed attempts every 6 hours."),
   );
-  $form['login']['user_failed_login_user_window'] = array(
+  $form['user']['username']['flood_uid_only'] = array(
     '#type' => 'select',
-    '#title' => t('Failed login (username) window'),
-    '#options' => array(0 => t('None (disabled)')) + drupal_map_assoc(array(60, 180, 300, 600, 900, 1800, 2700, 3600, 10800, 21600, 32400, 43200, 86400), 'format_interval'),
-    '#default_value' => variable_get('user_failed_login_user_window', 21600),
+    '#title' => t('Flood event registration'),
+    '#description' => t('Default - flood identifier is a combination of user id and IP address. This is less secure but more resistant to denial-of-service attacks that could lock out all users with public user names. More secure - register flood events based on the uid only, so they apply for any IP address.'),
+    '#options' => array(0 => t('UID + IP address'), 1 => t('UID only')),
+    '#default_value' => (int) config_get('user.flood', 'flood_uid_only'),
+  );
+
+  $form['user']['username']['flood_user_limit'] = array(
+    '#type' => 'select',
+    '#title' => t('Failed login limit'),
+    '#description' => t('Default 5 attempts'),
+    '#options' => backdrop_map_assoc(array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 75, 100, 125, 150, 200, 250, 500)),
+    '#default_value' => config_get('user.flood', 'flood_user_limit'),
+  );
+  $form['user']['username']['flood_user_window'] = array(
+    '#type' => 'select',
+    '#title' => t('Failed login window'),
+    '#description' => t('Default 6 hours.'),
+    '#options' => array(0 => t('None (disabled)')) + backdrop_map_assoc(array(60, 180, 300, 600, 900, 1800, 2700, 3600, 10800, 21600, 32400, 43200, 86400), 'format_interval'),
+    '#default_value' => config_get('user.flood', 'flood_user_window'),
   );
 
   // Contact module flood events.
@@ -51,14 +73,14 @@ function flood_control_settings_form() {
   $form['contact']['contact_threshold_limit'] = array(
     '#type' => 'select',
     '#title' => t('Sending e-mails limit'),
-    '#options' => drupal_map_assoc(array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 75, 100, 125, 150, 200, 250, 500)),
-    '#default_value' => variable_get('contact_threshold_limit', 5),
+    '#options' => backdrop_map_assoc(array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 75, 100, 125, 150, 200, 250, 500)),
+    '#default_value' => config_get('contact.settings', 'contact_threshold_limit'),
   );
   $form['contact']['contact_threshold_window'] = array(
     '#type' => 'select',
     '#title' => t('Sending e-mails window'),
-    '#options' => array(0 => t('None (disabled)')) + drupal_map_assoc(array(60, 180, 300, 600, 900, 1800, 2700, 3600, 10800, 21600, 32400, 43200, 86400), 'format_interval'),
-    '#default_value' => variable_get('contact_threshold_window', 3600),
+    '#options' => array(0 => t('None (disabled)')) + backdrop_map_assoc(array(60, 180, 300, 600, 900, 1800, 2700, 3600, 10800, 21600, 32400, 43200, 86400), 'format_interval'),
+    '#default_value' => config_get('contact.settings', 'contact_threshold_window'),
   );
 
   // Show a message if the user does not have any access to any options.
@@ -68,8 +90,39 @@ function flood_control_settings_form() {
     );
   }
   else {
-    $form = system_settings_form($form);
+    $form['actions']['#type'] = 'actions';
+    $form['actions']['submit'] = array(
+      '#type' => 'submit',
+      '#value' => t('Save configuration'),
+      '#submit' => array('flood_control_settings_form_submit'),
+    );
   }
 
   return $form;
+}
+
+/**
+ * Implements hook_submit().
+ */
+function flood_control_settings_form_submit($form, &$form_state) {
+  if (isset($form_state['values']['flood_ip_limit'])) {
+    $user_config = config('user.flood');
+    $user_config->set('flood_uid_only', (bool) $form_state['values']['flood_uid_only']);
+    $user_config->set('flood_ip_limit', (int) $form_state['values']['flood_ip_limit']);
+    $user_config->set('flood_ip_window', (int) $form_state['values']['flood_ip_window']);
+    $user_config->set('flood_user_limit', (int) $form_state['values']['flood_user_limit']);
+    $user_config->set('flood_user_window', (int) $form_state['values']['flood_user_window']);
+    $user_config->save();
+    watchdog('flood_control', t('User flood configuration updated.'), array(), WATCHDOG_INFO, l(t('Configure'), 'admin/config/system/flood-control'));
+
+  }
+
+  if (isset($form_state['values']['contact_threshold_limit'])) {
+    $user_config = config('contact.settings');
+    $user_config->set('contact_threshold_limit', (int) $form_state['values']['contact_threshold_limit']);
+    $user_config->set('contact_threshold_window', (int) $form_state['values']['contact_threshold_window']);
+    $user_config->save();
+    watchdog('flood_control', t('Contact flood configuration updated.'), array(), WATCHDOG_INFO, l(t('Configure'), 'admin/config/system/flood-control'));
+
+  }
 }

@@ -1,4 +1,5 @@
 name = Flood control
 description = "Interface for hidden flood control options."
-core = 7.x
+backdrop = 1.x
 configure = admin/config/system/flood-control
+type = module
