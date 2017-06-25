@@ -26,7 +26,7 @@ Hidden variables exposed by this module
 Current Maintainer
 ------------------
 
-- David Norman (https://github.com/deekayen)
+- None
 
 Credits
 -------
